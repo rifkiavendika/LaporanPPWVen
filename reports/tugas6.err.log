@@ -1,0 +1,60 @@
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/jupyter_cache/executors/utils.py", line 58, in single_nb_execution
+    executenb(
+  File "/usr/local/lib/python3.10/dist-packages/nbclient/client.py", line 1305, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+  File "/usr/local/lib/python3.10/dist-packages/jupyter_core/utils/__init__.py", line 173, in wrapped
+    return loop.run_until_complete(inner)
+  File "/usr/lib/python3.10/asyncio/base_events.py", line 649, in run_until_complete
+    return future.result()
+  File "/usr/local/lib/python3.10/dist-packages/nbclient/client.py", line 705, in async_execute
+    await self.async_execute_cell(
+  File "/usr/local/lib/python3.10/dist-packages/nbclient/client.py", line 1058, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "/usr/local/lib/python3.10/dist-packages/nbclient/client.py", line 914, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+from sumy.parsers.plaintext import PlaintextParser
+from sumy.nlp.tokenizers import Tokenizer
+from sumy.summarizers.lsa import LsaSummarizer
+
+# Inisialisasi list untuk menyimpan ringkasan dari setiap dokumen
+ringkasan_dokumen = []
+
+dokumen = df['Abstrak']
+
+for doc in dokumen:
+    # Inisialisasi parser untuk dokumen
+    parser = PlaintextParser.from_string(doc, Tokenizer("english"))
+
+    # Inisialisasi ekstraktor ringkasan dengan metode LSA
+    summarizer = LsaSummarizer()
+
+    # Dapatkan ringkasan dengan jumlah kalimat yang diinginkan (contoh: 3)
+    ringkasan = summarizer(parser.document, 3)
+
+    # Ubah ringkasan menjadi string
+    ringkasan = " ".join(str(sentence) for sentence in ringkasan)
+
+    # Tambahkan ringkasan ke dalam list
+    ringkasan_dokumen.append(ringkasan)
+
+# Tampilkan ringkasan dari semua dokumen
+for i, ringkasan in enumerate(ringkasan_dokumen):
+    print(f"Ringkasan Dokumen {i+1}:\n{ringkasan}\n")
+
+------------------
+
+
+[0;31m---------------------------------------------------------------------------[0m
+[0;31mNameError[0m                                 Traceback (most recent call last)
+[0;32m<ipython-input-2-1f44246cabcd>[0m in [0;36m<cell line: 8>[0;34m()[0m
+[1;32m      6[0m [0mringkasan_dokumen[0m [0;34m=[0m [0;34m[[0m[0;34m][0m[0;34m[0m[0;34m[0m[0m
+[1;32m      7[0m [0;34m[0m[0m
+[0;32m----> 8[0;31m [0mdokumen[0m [0;34m=[0m [0mdf[0m[0;34m[[0m[0;34m'Abstrak'[0m[0;34m][0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m      9[0m [0;34m[0m[0m
+[1;32m     10[0m [0;32mfor[0m [0mdoc[0m [0;32min[0m [0mdokumen[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+
+[0;31mNameError[0m: name 'df' is not defined
+
